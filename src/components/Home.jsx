@@ -1,6 +1,10 @@
 import React from 'react';
 import HomeContent from './../assets/HomeContent'
 import Header from '../assets/Header';
+import Join from '../assets/join'
+import Courses from '../assets/Courses'
+import Techs from '../assets/Techs'
+import Events from './Events';
 
 const COLORS = {
   background: '#1a202c',
@@ -19,6 +23,9 @@ const Home = () => (
   <div className={`bg-${COLORS.background} text-${COLORS.foreground} min-h-screen flex flex-col`}>
     <Header />
     <HomeContent />
+    <Techs/>
+    <Courses/>
+    <Join/>
  
   </div>
 );
