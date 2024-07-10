@@ -8,7 +8,7 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-reac
 import Home from './components/Home.jsx'
 import { CustomProvider } from 'rsuite';
 import { PrimeReactProvider } from 'primereact/api';
-import 'rsuite/dist/rsuite-no-reset.min.css';
+import 'rsuite/dist/rsuite-no-reset.min.css';   
  
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 

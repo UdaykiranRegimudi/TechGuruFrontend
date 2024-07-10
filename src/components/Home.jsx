@@ -8,8 +8,7 @@ import Upcoming from '../assets/Upcoming';
 import Join from '../assets/join';
 import Courses from '../assets/Courses';
 
-// import { Navbar, Nav } from 'rsuite';
-// import NavMenu1 from './Nav'
+
 
 import Events from './Events';
 
