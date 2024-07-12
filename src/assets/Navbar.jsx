@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -12,10 +12,13 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import ProfileModel from './ProfileModel';
+import { useUser } from '@clerk/clerk-react';
 
 import Button from '@mui/material/Button';
 
 import { styled, alpha } from '@mui/material/styles';
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -89,6 +92,38 @@ function Navbar() {
   const handleCloseMenu = () => {
     setMenuAnchorEl(null);
   };
+
+  const [view,setView] = useState(true)
+  const {user} = useUser()
+  
+  useEffect(() =>{
+      const fetchData = async()=>{
+        const url = "http://localhost:3000/student/"
+        const res = await fetch(url);
+        const data = await res.json()
+        const findData = data.find(each => each.email == user.emailAddresses[0].emailAddress)
+        if(findData != undefined){
+          setView(false)
+        }
+        
+
+      }
+      fetchData()
+  },[])
+
+  const  SubmitData = async(data) =>{
+      data.year = parseInt(data.year)
+      const object =  {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    }
+    const response = await fetch("http://localhost:3000/student/",object)
+    const data1 = await response.json()
+    alert(data1.message)
+  }
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -174,9 +209,9 @@ function Navbar() {
         <div style={{ flexGrow: 1 }} />
         <div style={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
           <IconButton size="large" aria-label="show 4 new mails" color="black">
-            <Badge badgeContent={4} color="error">
-              <MailIcon />
-            </Badge>
+            {view && <Badge badgeContent={1} color="error">
+              <ProfileModel  SubmitData={SubmitData}/>
+            </Badge>}
           </IconButton>
           <IconButton
             size="large"

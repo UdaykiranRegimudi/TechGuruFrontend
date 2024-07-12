@@ -1,14 +1,87 @@
 
 import { useParams } from 'react-router-dom';
+import { useUser } from '@clerk/clerk-react';
+import { useEffect, useState } from 'react';
 
 
 
 const EventDetails = ({events}) =>{
     console.log(events)
     const { eventId } = useParams();
-    const details = events.find(p => p.id == parseInt(eventId));
+    const details = events.find(p => p.hackId == parseInt(eventId));
     console.log(details)
-    return(
+
+    const [userData,setUser] = useState()
+    const {user} = useUser();
+
+    useEffect(() =>{
+        const fetchData = async()=>{
+          const url = "http://localhost:3000/student/"
+          const res = await fetch(url);
+          const data = await res.json()
+
+          console.log(user.emailAddresses[0].emailAddress)
+          const findData = data.find(each => each.email == user.emailAddresses[0].emailAddress)
+          if(findData != undefined){
+            setUser(findData)
+          }else{
+            setUser(undefined)
+          }
+        }
+        fetchData()
+    },[1])
+
+
+    const SubmitData = async() => {
+
+        if(userData != undefined){
+            
+            userData["hackathonName"] = details.title
+            userData["hackathonId"] = details.hackId
+            console.log(userData)
+            const object =  {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            }
+            const response = await fetch("http://localhost:3000/hackathonRegister/",object)
+            const data1 = await response.json()
+            console.log(data1)
+            console.log(response.status)
+            if(response.status == 200){ 
+                const emailData = {
+                    email:userData.email,
+                    subject:"Welcome to "+ userData.hackathonName+ " - Your Registration is Confirmed!",
+                    startDate:details.date,
+                    endDate:details.date,
+                    studentName:userData.name,
+                    courseName:userData.hackathonName,
+
+                }
+                const object1 = {
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json',
+                    },
+                    body:JSON.stringify(emailData),
+                }
+                const res = await fetch("http://localhost:3000/email",object1)
+                alert(data1.message)
+        }else{
+            alert(data1.message)
+        }
+        }else{
+            alert("Please complete your profile details before registering for the event.")
+        }
+    }
+
+
+
+
+
+    return(  
         <div >
             <div className="flex justify-between pt-4 pl-4 pr-4">
                 <div className="bg-card text-card-foreground p-6 rounded-lg shadow-lg m-2 text-white w-2/3 bg-gray-700">
@@ -26,7 +99,7 @@ const EventDetails = ({events}) =>{
                 <div className="bg-card text-card-foreground p-2 rounded-lg shadow-lg m-2 bg-gray-700 text-white w-1/3">
                     <img src={details.imageUrl} className="h-72 w-full"/>
                     <div className="text-center mt-4">
-                        <button className="btn btn-outline-light">Register For Event</button>
+                    <button className='btn btn-outline-light'  onClick={SubmitData} >Register for the Event</button>
                     </div>
                     
                 </div>

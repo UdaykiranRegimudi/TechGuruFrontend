@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 
 const Events = ({events}) =>{
     return(
-        <div>
-            <h1 className='text-center text-2xl font-semibold mt-5 mb-5'>Explore Our Dynamic Hackathons</h1>
+        <div className="pt-4">
+            <h1 className='text-center text-2xl font-semibold mb-5'>Explore Our Dynamic Hackathons</h1>
             
             <div className="flex flex-wrap cursor-pointer">
                 
                 {events.map(each =>(
-                    <Link to={`/event/${each.id}`} className="bg-card text-card-foreground p-6 rounded-lg shadow-lg m-2 bg-white w-72">
+                    <Link to={`/event/${each.hackId}`} className="bg-card text-card-foreground p-6 rounded-lg shadow-lg m-2 bg-white w-72">
                         <div className="ml-4">
                             <img src={each.imageUrl} className="rounded-full mb-10" height="200" width="200" />
                         </div>

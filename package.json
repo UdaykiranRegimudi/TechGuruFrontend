@@ -16,17 +16,21 @@
     "@mui/icons-material": "^5.15.21",
     "@mui/material": "^5.15.21",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
+    "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
+    "formik": "^2.4.6",
     "lucide-react": "^0.400.0",
     "markdown-to-jsx": "^7.4.7",
     "primereact": "^10.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.2.1",
+    "react-loader-spinner": "^6.1.6",
     "react-router-dom": "^6.24.0",
     "react-scroll": "^1.9.0",
     "rsuite": "^5.65.0",
-    "styled-components": "^6.1.11"
+    "styled-components": "^6.1.11",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

@@ -2,56 +2,85 @@
 import { useParams } from 'react-router-dom';
 import ToastButton from '../assets/Toast';
 import Upload from '../assets/Upload';
-import Model from '../assets/Model';
+
+import { useEffect, useState } from 'react';
+import { useUser } from '@clerk/clerk-react';
 
 
 
 const CourseDetails = ({courses}) =>{
 
+    const [userData,setUser] = useState()
+
+    const {user} = useUser();
+
+    useEffect(() =>{
+        const fetchData = async()=>{
+          const url = "http://localhost:3000/student/"
+          const res = await fetch(url);
+          const data = await res.json()
+
+          console.log(user.emailAddresses[0].emailAddress)
+          const findData = data.find(each => each.email == user.emailAddresses[0].emailAddress)
+          if(findData != undefined){
+            setUser(findData)
+          }else{
+            setUser(undefined)
+          }
+        }
+        fetchData()
+    },[1])
+
     
 
     console.log(courses)
     const { courseId } = useParams();
-    const details = courses.find(p => p.id == parseInt(courseId));
+    const details = courses.find(p => p.courseId == parseInt(courseId));
     console.log(details)
 
-    const SubmitData = async(data) => {
-        data.year = parseInt(data.year)
-        data["course"] = details.courseName
-        data["courseId"] = details.id
-        console.log(data)
-        const object =  {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        }
-        const response = await fetch("http://localhost:3000/register/",object)
-        const data1 = await response.json()
-        console.log(response.status)
-        if(response.status == 200){
-            const emailData = {
-                email:data.email,
-                subject:"Welcome to "+ data.course+ " - Your Registration is Confirmed!",
-                startDate:details.datesAndTimings.startDate,
-                endDate:details.datesAndTimings.endDate,
-                studentName:data.name,
-                courseName:data.course,
+    const SubmitData = async() => {
 
-            }
-            const object1 = {
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json',
+        if(userData != undefined){
+            
+            userData["course"] = details.courseName
+            userData["courseId"] = details.courseId
+            console.log(userData)
+            const object =  {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
                 },
-                body:JSON.stringify(emailData),
+                body: JSON.stringify(userData),
             }
-            const res = await fetch("http://localhost:3000/register/send-email",object1)
+            const response = await fetch("http://localhost:3000/courseRegister/",object)
+            const data1 = await response.json()
+            console.log(data1)
+            console.log(response.status)
+            if(response.status == 200){
+                const emailData = {
+                    email:userData.email,
+                    subject:"Welcome to "+ userData.course+ " - Your Registration is Confirmed!",
+                    startDate:details.datesAndTimings.startDate,
+                    endDate:details.datesAndTimings.endDate,
+                    studentName:userData.name,
+                    courseName:userData.course,
+
+                }
+                const object1 = {
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json',
+                    },
+                    body:JSON.stringify(emailData),
+                }
+                const res = await fetch("http://localhost:3000/email",object1)
+                alert(data1.message)
+        }else{
+            alert(data1.message)
         }
-        
-        
-        alert(data1.message)
+        }else{
+            alert("Please complete your profile details before registering for the event.")
+        }
     }
 
     return(
@@ -74,7 +103,7 @@ const CourseDetails = ({courses}) =>{
                     <img src={details.imageUrl} className="h-72 w-full"/>
                     <div className="text-center mt-4">
                         
-                        <Model  data = {"Register for Event"} SubmitData={SubmitData} />
+                        <button className='btn btn-outline-light'  onClick={SubmitData} >Register for the Event</button>
                     </div>
                     
                 </div>

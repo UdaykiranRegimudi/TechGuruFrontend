@@ -9,13 +9,17 @@ import Chatbot from './components/Chatbot'
 import CourseDetails from './components/CoursesDetails'
 import EventDetails from './components/EventDetails'
 import UpcomingEvents from './components/UpcomingEvents'
+import AdminPage from './components/AdminPage'
+import AddCourse from './components/AddCourse'
+import AddHackathon from './components/AddHackathon'
+import { useEffect, useState } from 'react'
+import { Triangle } from 'react-loader-spinner'
 
 
 
 
 const courses = [
   {
-      "id":1,
       "courseName": "Full-Stack Web Development",
       "description": "Master front-end and back-end technologies including React, Node.js, and Express. Build robust, scalable web applications and become a full-stack developer.",
       "about": "The Full-Stack Web Development course is designed to take you from beginner to advanced. Over the duration of this course, you'll learn to build dynamic and responsive web applications. You'll gain hands-on experience with both client-side and server-side development, work with databases, and understand deployment processes. By the end of the course, you'll have a comprehensive portfolio showcasing your skills.",
@@ -135,7 +139,7 @@ const courses = [
           "timings": "Various timings - stay tuned for specific event schedules"
       },
       "topics": [
-          "Hackathons and Coding Competitions",
+          " Hackathons and Coding Competitions",
           "Technology Workshops",
           "Guest Lectures by Industry Experts",
           "Networking Sessions",
@@ -200,7 +204,7 @@ const events = [
       time: "9:00 AM - 5:00 PM",
       description: "The AI Innovation Hackathon invites you to delve into the realm of artificial intelligence and craft cutting-edge AI solutions. Collaborate with industry experts, exchange ideas with peers, and push the boundaries of AI technology. This event is perfect for those passionate about AI, offering hands-on experience with the latest tools and frameworks. Engage in intense coding sessions, attend insightful talks, and compete to create impactful AI applications. Whether you're interested in machine learning, deep learning, or AI ethics, this hackathon provides a comprehensive platform to innovate and excel.",
       cta: "Join the Challenge",
-      imageUrl: "/pic7.png",
+      imageUrl: "/pic9.png",
       rules: [
         "Teams of up to 3 members are allowed.",
         "Use of pre-trained models is permitted, but the solution must be original.",
@@ -232,7 +236,7 @@ const events = [
       time: "11:00 AM - 7:00 PM",
       description: "Test your cybersecurity acumen in our Cybersecurity Defense Hackathon, where you'll defend against simulated cyber-attacks and develop robust security solutions. This event offers a unique opportunity to apply your knowledge in real-world scenarios, collaborate with peers, and receive guidance from cybersecurity experts. Participants will face various challenges designed to test their skills in threat detection, incident response, and vulnerability assessment. It's an intense, educational experience aimed at enhancing your understanding of modern cybersecurity practices and improving your defensive capabilities.",
       cta: "Defend Now",
-      imageUrl: "/pic8.png",
+      imageUrl: "/pic7.png",
       rules: [
         "Teams of up to 4 members are allowed.",
         "All defense mechanisms must be original and created during the hackathon.",
@@ -264,7 +268,7 @@ const events = [
       time: "8:00 AM - 4:00 PM",
       description: "Showcase your web development skills at our Web Development Hackathon, an event designed for both seasoned developers and aspiring coders. Build innovative web applications, engage in competitive coding sessions, and gain insights from leading industry professionals. This hackathon provides a platform to create impactful web solutions that prioritize user experience, design, and functionality. Collaborate with peers, participate in workshops, and leverage the latest technologies to develop cutting-edge web applications. It's an exciting opportunity to enhance your portfolio, gain recognition, and contribute to the future of web development.",
       cta: "Build with Us",
-      imageUrl: "/pic9.png",
+      imageUrl: "/pic8.png",
       rules: [
         "Teams of up to 4 members are allowed.",
         "Projects must be fully functional web applications.",
@@ -328,8 +332,31 @@ const events = [
   
 
 const App = () =>{
+
+  const [courses,setCourses] = useState()
+  const [events,setEvents] = useState()
+  const [view,setView] = useState(false)
+
+  useEffect(()=>{
+
+      const getData = async() =>{
+         const hackathonurl = "http://localhost:3000/hackathon/"
+         const courseurl = "http://localhost:3000/course/"
+         const hackauthonRes = await fetch(hackathonurl)
+         const hackathonData = await hackauthonRes.json()
+         setEvents(hackathonData)
+         const courseRes = await fetch(courseurl)
+         const courseData = await courseRes.json()
+         setCourses(courseData)
+         setView(true)
+      }
+      getData()
+  },[])
+
+
   return(
-    <div style={{backgroundColor:"white",paddingTop:"0px",}}>
+    <>
+    {view ? <div style={{backgroundColor:"white",paddingTop:"0px",}}>
       <div style={{position:"fixed",top: 0,width: "100%", zIndex: 1000}}>
         <Navbar/>
       </div>
@@ -351,11 +378,24 @@ const App = () =>{
               <Route path="/event/:eventId" element={<EventDetails events={events}/>}/>
               <Route path="/ctf" element={<UpcomingEvents/>}/>
               <Route path="/winners" element={<UpcomingEvents/>}/>
+              <Route path="/admin" element={<AdminPage/>}/>
+              <Route path="/addCourse" element={<AddCourse/>}/>
+              <Route path="/addHackathon" element={<AddHackathon/>}/>
             </Routes>
         </div>
         </div>
       </div>
-    </div>
+    </div>: <div className='flex justify-center items-center' style={{height:"100vh"}}>
+          <Triangle
+            visible={true}
+            height="90"
+            width="90"
+            color="blue"
+            ariaLabel="triangle-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            /></div>}
+    </>
   )
 }
 

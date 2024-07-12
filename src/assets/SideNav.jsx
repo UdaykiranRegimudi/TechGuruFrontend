@@ -1,9 +1,10 @@
 // src/SideNav.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { UserButton, useUser } from '@clerk/clerk-react';
 import { FaTachometerAlt, FaLaptopCode, FaBook, FaFlagCheckered,FaRobot, FaTrophy, FaLifeRing, FaUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { RiAdminFill } from "react-icons/ri";
 
 const Sidebar = styled.div`
   height: 92vh;
@@ -49,7 +50,22 @@ const SupportProfile = styled.div`
 
 const Sidenavbar = () => {
   const { user } = useUser();
-  const username = user.username || user.firstName || user.lastName || user.emailAddress;
+  const username = user.username || user.firstName || user.lastName || user.emailAddresses[0].emailAddress;
+
+  const [view,setView] = useState(false)
+
+  useEffect(() =>{
+    const getData = async() =>{
+      const url = "http://localhost:3000/admin/"
+      const res = await fetch(url)
+      const data = await res.json()
+      const match = data.find(each => each.email == user.emailAddresses[0].emailAddress)
+      if(match != undefined){
+        setView(true)
+      }
+    }
+    getData()
+  },[])
 
   return (
     <Sidebar>
@@ -73,6 +89,9 @@ const Sidenavbar = () => {
           <SidebarLink to="/winners" className='m-2'>
             <FaTrophy /> Winners
           </SidebarLink>
+          {view && <SidebarLink to="/admin" className='m-2'>
+            <RiAdminFill /> Admin
+          </SidebarLink>}
           
         </SidebarLinks>
       </div>
