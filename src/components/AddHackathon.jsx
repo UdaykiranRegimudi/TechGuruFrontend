@@ -67,7 +67,7 @@ const AddHackathon = () => {
         },
         body: JSON.stringify(hackathon),
     }
-    const response = await fetch("http://localhost:3000/hackathon/",object)
+    const response = await fetch("https://techbackend-2.onrender.com/hackathon/",object)
     const data1 = await response.json()
     alert(data1.message)
   };

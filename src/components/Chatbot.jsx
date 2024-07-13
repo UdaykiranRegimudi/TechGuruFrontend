@@ -31,7 +31,7 @@ const Chatbot = () =>{
         },
         body: JSON.stringify({prompt,codeSnippet}),
       }
-      const response = await fetch("http://localhost:3000/chatbot/",object)
+      const response = await fetch("https://techbackend-2.onrender.com/chatbot/",object)
       const data = await response.json()
       setMessages((prevMessages) => [
         ...prevMessages,

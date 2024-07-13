@@ -340,8 +340,8 @@ const App = () =>{
   useEffect(()=>{
 
       const getData = async() =>{
-         const hackathonurl = "http://localhost:3000/hackathon/"
-         const courseurl = "http://localhost:3000/course/"
+         const hackathonurl = "https://techbackend-2.onrender.com/hackathon/"
+         const courseurl = "https://techbackend-2.onrender.com/course/"
          const hackauthonRes = await fetch(hackathonurl)
          const hackathonData = await hackauthonRes.json()
          setEvents(hackathonData)

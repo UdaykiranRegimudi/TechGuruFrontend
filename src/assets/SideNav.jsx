@@ -56,7 +56,7 @@ const Sidenavbar = () => {
 
   useEffect(() =>{
     const getData = async() =>{
-      const url = "http://localhost:3000/admin/"
+      const url = "https://techbackend-2.onrender.com/admin/"
       const res = await fetch(url)
       const data = await res.json()
       const match = data.find(each => each.email == user.emailAddresses[0].emailAddress)

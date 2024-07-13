@@ -96,7 +96,7 @@ const AddCourse = () => {
         },
         body: JSON.stringify(course),
     }
-    const response = await fetch("http://localhost:3000/course/",object)
+    const response = await fetch("https://techbackend-2.onrender.com/course/",object)
     const data1 = await response.json()
     alert(data1.message)
     // Submit the form data to your server or handle it a   s needed

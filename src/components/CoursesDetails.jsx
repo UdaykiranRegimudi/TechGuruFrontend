@@ -16,7 +16,7 @@ const CourseDetails = ({courses}) =>{
 
     useEffect(() =>{
         const fetchData = async()=>{
-          const url = "http://localhost:3000/student/"
+          const url = "https://techbackend-2.onrender.com/student/"
           const res = await fetch(url);
           const data = await res.json()
 
@@ -52,7 +52,7 @@ const CourseDetails = ({courses}) =>{
                 },
                 body: JSON.stringify(userData),
             }
-            const response = await fetch("http://localhost:3000/courseRegister/",object)
+            const response = await fetch("https://techbackend-2.onrender.com/courseRegister/",object)
             const data1 = await response.json()
             console.log(data1)
             console.log(response.status)
@@ -73,7 +73,7 @@ const CourseDetails = ({courses}) =>{
                     },
                     body:JSON.stringify(emailData),
                 }
-                const res = await fetch("http://localhost:3000/email",object1)
+                const res = await fetch("https://techbackend-2.onrender.com/email",object1)
                 alert(data1.message)
         }else{
             alert(data1.message)

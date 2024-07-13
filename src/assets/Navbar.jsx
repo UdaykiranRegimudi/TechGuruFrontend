@@ -98,7 +98,7 @@ function Navbar() {
   
   useEffect(() =>{
       const fetchData = async()=>{
-        const url = "http://localhost:3000/student/"
+        const url = "https://techbackend-2.onrender.com/student/"
         const res = await fetch(url);
         const data = await res.json()
         const findData = data.find(each => each.email == user.emailAddresses[0].emailAddress)
@@ -120,7 +120,7 @@ function Navbar() {
         },
         body: JSON.stringify(data),
     }
-    const response = await fetch("http://localhost:3000/student/",object)
+    const response = await fetch("https://techbackend-2.onrender.com/student/",object)
     const data1 = await response.json()
     alert(data1.message)
   }
