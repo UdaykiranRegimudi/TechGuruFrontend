@@ -30,7 +30,7 @@ To get started with Project Tech, follow these steps:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/project-tech.git
+    git clone [https://github.com/your-username/project-tech.git](https://github.com/UdaykiranRegimudi/TechGuruFrontend)
     ```
 
 2. Navigate to the project directory:
